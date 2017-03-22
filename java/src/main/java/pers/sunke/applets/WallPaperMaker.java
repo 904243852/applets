@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -27,7 +28,7 @@ public class WallPaperMaker {
 
 	private static final String TargetDirectory = System.getProperty("user.home") + "\\Pictures\\wallpaper\\";
 
-	private static final String WatermarkFilePath = "H:/watermark.jpg";
+	private static final String WatermarkFilePath = TargetDirectory + "watermark.jpg";
 
 	public static String get(String url) {
 		StringBuilder result = new StringBuilder();
@@ -121,6 +122,11 @@ public class WallPaperMaker {
 	}
 
 	public static void main(String[] args) throws IOException {
+		// System.setProperty("http.proxyHost", "www.proxy.com");
+		// System.setProperty("http.proxyPort", String.valueOf(8080));
+		// System.setProperty("http.proxyUserName", "username");
+		// System.setProperty("http.proxyPassword", "password");
+
 		String x = get(BingBackgroundImageRequestUrl);
 		String r = simpleMatch("<url>([^<]*)</url>", x);
 
@@ -128,14 +134,27 @@ public class WallPaperMaker {
 		URLConnection connection = url.openConnection();
 		connection.connect();
 		BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
-		BufferedImage sourceImage = ImageIO.read(bis);
 
 		File watermarkFile = new File(WatermarkFilePath);
-
 		File targetFile = getTargetFile();
 
-		// File sourceFile = new File("H:/source.jpg");
-		// BufferedImage sourceImage = ImageIO.read(sourceFile);
-		AddWatermarkImage(sourceImage, watermarkFile, targetFile);
+		if (watermarkFile.exists() && watermarkFile.isFile()) {
+			BufferedImage sourceImage = ImageIO.read(bis);
+
+			// File sourceFile = new File("H:/source.jpg");
+			// BufferedImage sourceImage = ImageIO.read(sourceFile);
+			AddWatermarkImage(sourceImage, watermarkFile, targetFile);
+		} else {
+			FileOutputStream fos = new FileOutputStream(targetFile);
+			byte[] buf = new byte[1024];
+			for (int len = 0; (len = bis.read(buf)) != -1;) {
+				fos.write(buf, 0, len);
+			}
+			fos.close();
+		}
+
+		// Runtime runtime = Runtime.getRuntime();
+		// runtime.exec(String.format("reg add \"HKEY_CURRENT_USER\\Control Panel\\Desktop\" /v Wallpaper /t REG_SZ /d \"%s\" /f", targetFile.getPath()));
+		// runtime.exec("RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters");
 	}
 }
