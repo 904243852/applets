@@ -154,7 +154,11 @@ public class WallPaperMaker {
 		}
 
 		// Runtime runtime = Runtime.getRuntime();
+		// // 设置背景图片
 		// runtime.exec(String.format("reg add \"HKEY_CURRENT_USER\\Control Panel\\Desktop\" /v Wallpaper /t REG_SZ /d \"%s\" /f", targetFile.getPath()));
+		// // 设置背景图片样式（2为拉伸）
+		// runtime.exec("reg add \"HKEY_CURRENT_USER\\Control Panel\\Desktop\" /v WallpaperStyle /t REG_SZ /d \"2\" /f");
+		// // 刷新命令需要通过批处理脚本调用
 		// runtime.exec("RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters");
 	}
 }
