@@ -6,3 +6,5 @@ target
 logs
 bin
 *.db
+.suo
+obj
