@@ -6,11 +6,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import pers.sunke.securityaudit.domain.CodeVulnerability;
-import pers.sunke.securityaudit.domain.Tuple;
+import pers.sunke.securityaudit.domain.TupleEntry;
 
 public abstract class Policy {
 
@@ -34,12 +35,12 @@ public abstract class Policy {
 	 * @param content
 	 * @return
 	 */
-	protected List<Tuple<Integer, String>> match(String pattern, String content) {
+	protected List<Entry<Integer, String>> match(String pattern, String content) {
 		Pattern p = Pattern.compile(pattern);
 		Matcher m = p.matcher(content);
-		List<Tuple<Integer, String>> results = new ArrayList<Tuple<Integer, String>>();
+		List<Entry<Integer, String>> results = new ArrayList<Entry<Integer, String>>();
 		while (m.find()) {
-			results.add(new Tuple<Integer, String>(getLine(content.substring(0, m.start())), m.group()));
+			results.add(new TupleEntry<Integer, String>(getLine(content.substring(0, m.start())), m.group()));
 		}
 		return results;
 	}

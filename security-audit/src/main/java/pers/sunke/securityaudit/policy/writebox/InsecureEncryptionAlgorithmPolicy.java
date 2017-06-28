@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import pers.sunke.securityaudit.domain.CodeVulnerability;
-import pers.sunke.securityaudit.domain.Tuple;
 
 public class InsecureEncryptionAlgorithmPolicy extends Policy {
 
@@ -21,7 +21,7 @@ public class InsecureEncryptionAlgorithmPolicy extends Policy {
 	public List<CodeVulnerability> analysis(File file) throws IOException {
 		String content = read(file);
 
-		List<Tuple<Integer, String>> result = match("\"MD2\"|\"MD4\"|\"MD5\"", content);
+		List<Entry<Integer, String>> result = match("\"MD2\"|\"MD4\"|\"MD5\"", content);
 		List<CodeVulnerability> vulnerabilitys = null;
 		if (result.size() > 0) {
 			vulnerabilitys = new ArrayList<CodeVulnerability>();
