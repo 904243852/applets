@@ -14,3 +14,6 @@ mklink /H "F:\githubs\applets\media-server\pom.xml" "F:\KF.Java\projects\media-s
 mkdir security-audit
 mklink /J "F:\githubs\applets\security-audit\src" "F:\KF.Java\projects\security-audit\src"
 mklink /H "F:\githubs\applets\security-audit\pom.xml" "F:\KF.Java\projects\security-audit\pom.xml"
+
+mkdir python
+mklink /H "F:\githubs\applets\python\lint.py" "F:\Document\专业资料\计算机技术\命令脚本\python\lint.py"
