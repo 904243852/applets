@@ -19,16 +19,55 @@ rules_xml_content = '''<?xml version="1.0" encoding="UTF-8"?>
             使用 JDBC 执行 SQL 语句时，禁止使用未校验的用户输入的数据拼接 SQL 语句
         </description>
     </rule>
+    <rule>
+        <name>Web渗透：XML 注入（XML外部实体注入，即XXE注入）</name>
+        <regex>
+            DocumentBuilderFactory|DocumentBuilder|SAXParserFactory|SAXParser|SAXBuilder|SAXReader
+        </regex>
+        <filetype>.java</filetype>
+        <description>ref http://www.cnblogs.com/clearlove/articles/5502012.html，解决方法：禁止使用外部实体</description>
+    </rule>
+    <rule>
+        <name>Web渗透：XPath 注入</name>
+        <regex>javax\.xml\.xpath;</regex>
+        <filetype>.java</filetype>
+        <description></description>
+    </rule>
+    <rule>
+        <name>Web渗透：日志注入</name>
+        <regex>\.debug|\.info|\.warn|\.error</regex>
+        <filetype>.java</filetype>
+        <description></description>
+    </rule>
 
     <rule>
         <name>Java安全编码规范：禁止使用不安全随机数</name>
-        <regex>
-            <![CDATA[java\.util\.Random;]]>
-        </regex>
+        <regex>java\.util\.Random;</regex>
         <filetype>.java</filetype>
         <description>
-            参考 http://www.cnblogs.com/rupeng/p/3723018.html
+            ref http://www.cnblogs.com/rupeng/p/3723018.html
         </description>
+    </rule>
+    <rule>
+        <name>Java安全编码规范：禁止使用未加密的套接字</name>
+        <regex>java\.net\.Socket;</regex>
+        <filetype>.java</filetype>
+        <description></description>
+    </rule>
+    <rule>
+        <name>Java安全编码规范：Java异常中包含敏感信息</name>
+        <regex>
+            FileNotFoundException|JarException|MissResourceException|NotOwnerException|ConcurrentModificationException|InsufficientResourcesException|BindException|OutOfMemoryException|SQLException|StackOverflowException
+        </regex>
+        <filetype>.java</filetype>
+        <description></description>
+    </rule>
+
+    <rule>
+        <name>JS安全编码规范：eval等方法解析js脚本中，传入的参数未经js编码，可能导致XSS</name>
+        <regex>eval|setTimeout</regex>
+        <filetype>.js,.jsp,.tag</filetype>
+        <description></description>
     </rule>
 </rules>
 '''
@@ -47,12 +86,15 @@ for node_rule in node_rules.childNodes:
     if node_rule.nodeType == node_rule.ELEMENT_NODE:
         name = node_rule.getElementsByTagName('name')[0].firstChild.data
         regex = node_rule.getElementsByTagName('regex')[0].firstChild.wholeText.strip()
-        filetype = node_rule.getElementsByTagName('filetype')[0].firstChild.data
-        description = node_rule.getElementsByTagName('description')[0].firstChild.data
-        # print name, regex, filetype, description
+        filetypes = re.split('\s|,|;|\|', node_rule.getElementsByTagName('filetype')[0].firstChild.data)
+        if '' in filetypes:
+            filetypes.remove('')
+        node_description = node_rule.getElementsByTagName('description')[0].firstChild
+        description = node_description.data if node_description != None else ''
+        # print name, regex, filetypes, description
 
         pattern = re.compile(regex, re.MULTILINE|re.DOTALL)
-        rules_list.append((name, pattern, filetype, description))
+        rules_list.append((name, pattern, filetypes, description))
 
 for parent, dirnames, filenames in os.walk(directory): # 分别返回父目录、所有文件夹名字（不含路径）、所有文件名字
     for filename in filenames:
@@ -63,7 +105,7 @@ for parent, dirnames, filenames in os.walk(directory): # 分别返回父目录�
         fileContent = file.read()
 
         for rule in rules_list:
-            if rule[2] == os.path.splitext(filepath)[1]:
+            if os.path.splitext(filepath)[1] in rule[2]:
                 pattern = rule[1]
 
                 for m in pattern.finditer(fileContent):

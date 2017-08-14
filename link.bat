@@ -1,4 +1,6 @@
 mkdir dotnet
+mklink /H "F:\githubs\applets\dotnet\crawler.cs" "F:\Document\专业资料\计算机技术\命令脚本\.unfinished\crawler.cs"
+
 mkdir html
 mklink /J "F:\githubs\applets\dotnet\SimplePendant" "F:\KF.NET\projects\SimplePendant"
 mklink /H "F:\githubs\applets\html\md2html.html" "F:\KF.HTML\src\tools\md2html.html"
