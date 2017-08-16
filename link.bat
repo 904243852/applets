@@ -19,3 +19,6 @@ mklink /H "F:\githubs\applets\security-audit\pom.xml" "F:\KF.Java\projects\secur
 
 mkdir python
 mklink /H "F:\githubs\applets\python\lint.py" "F:\Document\专业资料\计算机技术\命令脚本\python\lint.py"
+
+mkdir shell
+mklink /H "F:\githubs\applets\shell\backup_update_compare.sh" "F:\Document\专业资料\计算机技术\命令脚本\shell\backup_update_compare.sh"
