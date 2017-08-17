@@ -22,3 +22,4 @@ mklink /H "F:\githubs\applets\python\lint.py" "F:\Document\×¨Òµ×ÊÁÏ\¼ÆËã»ú¼¼Êõ\Ã
 
 mkdir shell
 mklink /H "F:\githubs\applets\shell\backup_update_compare.sh" "F:\Document\×¨Òµ×ÊÁÏ\¼ÆËã»ú¼¼Êõ\ÃüÁî½Å±¾\shell\backup_update_compare.sh"
+mklink /H "F:\githubs\applets\shell\git_pull_with_audit.sh" "F:\Document\×¨Òµ×ÊÁÏ\¼ÆËã»ú¼¼Êõ\ÃüÁî½Å±¾\shell\git_pull_with_audit.sh"
