@@ -2,4 +2,4 @@
 
 cd %~dp0
 
-java ImageDownloader
+java SetDesktop

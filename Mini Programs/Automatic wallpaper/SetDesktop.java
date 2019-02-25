@@ -1,6 +1,7 @@
 
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
@@ -18,7 +19,7 @@ import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
-public class ImageDownloader {
+public class SetDesktop {
 
 	private static final String BingBaseUrl = "http://cn.bing.com";
 
@@ -144,9 +145,14 @@ public class ImageDownloader {
 		if (watermarkFile.exists() && watermarkFile.isFile()) {
 			BufferedImage sourceImage = ImageIO.read(bis);
 
+			BufferedImage newImage = new BufferedImage(1366, 768, sourceImage.getType());
+        	Graphics g = newImage.getGraphics();
+	        g.drawImage(sourceImage, 0, 0, 1366, 768,null);
+    	    g.dispose();
+
 			// File sourceFile = new File("H:/source.jpg");
 			// BufferedImage sourceImage = ImageIO.read(sourceFile);
-			AddWatermarkImage(sourceImage, watermarkFile, targetFile);
+			AddWatermarkImage(newImage, watermarkFile, targetFile);
 		} else {
 			FileOutputStream fos = new FileOutputStream(targetFile);
 			byte[] buf = new byte[1024];
